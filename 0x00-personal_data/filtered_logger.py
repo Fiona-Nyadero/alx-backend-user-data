@@ -29,11 +29,22 @@ class RedactingFormatter(logging.Formatter):
 
     def format(self, record: logging.LogRecord) -> str:
         '''Filters values from incoming logs'''
-        message = record.getMessage()
+        message = super().format(record)
 
-        formatted = filter_datum(self.fields,
-                                 RedactingFormatter.REDACTION,
-                                 message,
-                                 RedactingFormatter.SEPARATOR)
-        formatted_logg = f"{RedactingFormatter.FORMAT}:{formatted}"
+        formatted_logg = filter_datum(self.fields, self.REDACTION,
+                                 message, self.SEPARATOR)
         return formatted_logg
+
+
+PII_FIELDS = ("name", "email", "phone", "ssn", "password")
+
+
+def get_logger() -> logging.Logger:
+    """doc doc doc"""
+    curr_logger = logging.getLogger("user_data")
+    curr_logger.setLevel(logging.INFO)
+    curr_logger.propagate = False
+    streamhndlr = logging.StreamHandler()
+    streamhndlr.setFormatter(RedactingFormatter(PII_FIELDS))
+    curr_logger.addHandler(sh)
+    return curr_logger
