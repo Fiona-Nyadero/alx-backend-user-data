@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 '''Module obfuscates specified fields in log messages'''
-import re
 from typing import List
 import logging
+import mysql-connector-python
+import os
+import re
 
 
 def filter_datum(fields: List[str], redaction: str,
@@ -32,7 +34,7 @@ class RedactingFormatter(logging.Formatter):
         message = super().format(record)
 
         formatted_logg = filter_datum(self.fields, self.REDACTION,
-                                 message, self.SEPARATOR)
+                                      message, self.SEPARATOR)
         return formatted_logg
 
 
@@ -48,3 +50,14 @@ def get_logger() -> logging.Logger:
     streamhndlr.setFormatter(RedactingFormatter(PII_FIELDS))
     curr_logger.addHandler(sh)
     return curr_logger
+
+
+def get_db() -> mysql.connector.connection.MySQLConnection:
+    '''Retrieves database credentials'''
+    user_name = os.getenv("PERSONAL_DATA_DB_USERNAME", "root")
+    pass_word = os.getenv("PERSONAL_DATA_DB_PASSWORD", "")
+    local_host = os.getenv("PERSONAL_DATA_DB_HOST", "localhost")
+    data_base = os.getenv("PERSONAL_DATA_DB_NAME")
+    db_cred = mysql.connector.connect(user=user_name, password=pass_word,
+                                      host=local_host, database=data_base)
+    return db_cred
