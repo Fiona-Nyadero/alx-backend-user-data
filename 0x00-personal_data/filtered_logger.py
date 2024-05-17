@@ -2,7 +2,7 @@
 '''Module obfuscates specified fields in log messages'''
 from typing import List
 import logging
-import mysql-connector-python
+import mysql.connector
 import os
 import re
 
