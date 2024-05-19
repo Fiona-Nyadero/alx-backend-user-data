@@ -65,3 +65,24 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
             database=db_name
             )
     return con
+
+
+def main() -> None:
+    '''Main function to display database content'''
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM users;")
+    new_log = get_logger()
+    for row in cursor:
+        record = []
+        for desc, value in zip(cursor.description, row):
+            pairing = f"{desc[0]}={str(value)}"
+            record.append(pairing)
+        log_message = "; ".join(record)
+        new_log.info(log_message)
+    cursor.close()
+    db.close()
+
+
+if __name__ == "__main__":
+    main()
