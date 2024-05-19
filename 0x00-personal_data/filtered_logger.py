@@ -42,26 +42,44 @@ PII_FIELDS = ("name", "email", "phone", "ssn", "password")
 
 
 def get_logger() -> logging.Logger:
-    '''Creates a logger'''
-    curr_logger = logging.getLogger("user_data")
-    curr_logger.setLevel(logging.INFO)
-    curr_logger.propagate = False
-    streamhndlr = logging.StreamHandler()
-    streamhndlr.setFormatter(RedactingFormatter(PII_FIELDS))
-    curr_logger.addHandler(streamhndlr)
-    return curr_logger
+    """doc doc doc"""
+    log = logging.getLogger("user_data")
+    log.setLevel(logging.INFO)
+    log.propagate = False
+    sh = logging.StreamHandler()
+    sh.setFormatter(RedactingFormatter(PII_FIELDS))
+    log.addHandler(sh)
+    return log
 
 
 def get_db() -> mysql.connector.connection.MySQLConnection:
-    '''Retrieves database credentials'''
-    db_username = os.getenv("PERSONAL_DATA_DB_USERNAME", "root")
-    db_password = os.getenv("PERSONAL_DATA_DB_PASSWORD", "")
-    db_host = os.getenv("PERSONAL_DATA_DB_HOST", "localhost")
+    """doc doc doc"""
+    username = os.getenv("PERSONAL_DATA_DB_USERNAME", "root")
+    password = os.getenv("PERSONAL_DATA_DB_PASSWORD", "")
+    host = os.getenv("PERSONAL_DATA_DB_HOST", "localhost")
     db_name = os.getenv("PERSONAL_DATA_DB_NAME")
-    con = mysql.connector.connect(
-            user=db_username,
-            password=db_password,
-            host=db_host,
-            database=db_name
-            )
-    return con
+
+    return mysql.connector.connect(
+        user=username, password=password, host=host, database=db_name
+    )
+
+
+def main() -> None:
+    """doc doc doc"""
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM users;")
+    log = get_logger()
+    for row in cursor:
+        data = []
+        for desc, value in zip(cursor.description, row):
+            pair = f"{desc[0]}={str(value)}"
+            data.append(pair)
+        row_str = "; ".join(data)
+        log.info(row_str)
+    cursor.close()
+    db.close()
+
+
+if __name__ == "__main__":
+    main()
