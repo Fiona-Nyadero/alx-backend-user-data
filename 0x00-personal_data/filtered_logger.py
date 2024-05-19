@@ -48,7 +48,7 @@ def get_logger() -> logging.Logger:
     curr_logger.propagate = False
     streamhndlr = logging.StreamHandler()
     streamhndlr.setFormatter(RedactingFormatter(PII_FIELDS))
-    curr_logger.addHandler(sh)
+    curr_logger.addHandler(streamhndlr)
     return curr_logger
 
 
