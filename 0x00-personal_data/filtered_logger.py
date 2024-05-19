@@ -42,7 +42,7 @@ PII_FIELDS = ("name", "email", "phone", "ssn", "password")
 
 
 def get_logger() -> logging.Logger:
-    """doc doc doc"""
+    '''Creates a logger'''
     curr_logger = logging.getLogger("user_data")
     curr_logger.setLevel(logging.INFO)
     curr_logger.propagate = False
@@ -54,10 +54,10 @@ def get_logger() -> logging.Logger:
 
 def get_db() -> mysql.connector.connection.MySQLConnection:
     '''Retrieves database credentials'''
-    user_name = os.getenv("PERSONAL_DATA_DB_USERNAME", "root")
-    pass_word = os.getenv("PERSONAL_DATA_DB_PASSWORD", "")
-    local_host = os.getenv("PERSONAL_DATA_DB_HOST", "localhost")
-    data_base = os.getenv("PERSONAL_DATA_DB_NAME")
-    db_cred = mysql.connector.connect(user=user_name, password=pass_word,
-                                      host=local_host, database=data_base)
-    return db_cred
+    username = os.getenv("PERSONAL_DATA_DB_USERNAME", "root")
+    password = os.getenv("PERSONAL_DATA_DB_PASSWORD", "")
+    host = os.getenv("PERSONAL_DATA_DB_HOST", "localhost")
+    db_name = os.getenv("PERSONAL_DATA_DB_NAME")
+    cred = mysql.connector.connect(user=username, password=password,
+                                   host=host, database=db_name)
+    return cred
