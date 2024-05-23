@@ -1,6 +1,7 @@
+#!/usr/bin/env python3
+'''Module implements the Auth class'''
 from flask import request
 from typing import List, TypeVar
-'''Module implements the Auth class'''
 
 
 class Auth():
