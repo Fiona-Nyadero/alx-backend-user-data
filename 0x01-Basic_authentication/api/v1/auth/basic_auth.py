@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
-'''Module for the basicAuth class'''
+'''Module implements the basicAuth class'''
+
+from api.v1.auth.auth import Auth
 
 
 class BasicAuth(Auth):
     '''Inherits from the Auth Class'''
-    pass
+    def __init__(self):
+        '''Initializes the BasicAuth class'''
+        pass
