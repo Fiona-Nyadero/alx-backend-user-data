@@ -38,6 +38,7 @@ class DB:
         neu_user = User(email=email, hashed_password=hashed_password)
         self._session.add(neu_user)
         self._session.commit()
+        self._session.close()
         return neu_user
 
     def find_user_by(self, **kwargs) -> User:
