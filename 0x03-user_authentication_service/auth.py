@@ -20,14 +20,14 @@ class Auth:
         """Initialize an Auth instance."""
         self._db = db
 
-    def register_user(self, email: str, password: str) -> User
-    """Register a user"""
-    try:
-        self._db.find_user_by(email=email)
-        raise ValueError(f"User {email} already exists")
-    except NoResultFound:
-        pass
+    def register_user(self, email: str, password: str) -> User:
+        """Register a user"""
+        try:
+            self._db.find_user_by(email=email)
+            raise ValueError(f"User {email} already exists")
+        except NoResultFound:
+            pass
 
-    pwd_hash = _hash_password(password)
-    user = self._db.add_user(email, pwd_hash)
-    return user
+        pwd_hash = _hash_password(password)
+        user = self._db.add_user(email, pwd_hash)
+        return user
