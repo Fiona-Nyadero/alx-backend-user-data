@@ -64,5 +64,3 @@ class DB:
             raise ValueError(f"Attribute '{key}' does not exist on the User model")
     
     self._session.commit()
-
-
