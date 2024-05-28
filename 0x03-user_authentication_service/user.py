@@ -1,4 +1,4 @@
-#!usr/bin/env python3
+#!/usr/bin/env python3
 '''Module implements the User class'''
 from sqlalchemy import Column, String, Integer, create_engine
 from sqlalchemy.orm import relationship
