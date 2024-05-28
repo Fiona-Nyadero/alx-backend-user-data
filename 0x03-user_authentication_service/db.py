@@ -45,7 +45,24 @@ class DB:
         try:
             user = self._session.query(User).filter_by(**kwargs).one()
         except NoResultFound:
-            raise
+            raise ValueError("Not found")
         except InvalidRequestError:
-            raise
+            raise ValueError("Invalid")
         return user
+    
+    def update_user(self, user_id: int, **kwargs) -> None:
+    """Updates a user details"""
+    try:
+        user = self.find_user_by(id=user_id)
+    except NoResultFound:
+        raise ValueError("Not found")
+    
+    for key, value in kwargs.items():
+        if hasattr(user, key):
+            setattr(user, key, value)
+        else:
+            raise ValueError(f"Attribute '{key}' does not exist on the User model")
+    
+    self._session.commit()
+
+
