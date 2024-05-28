@@ -49,18 +49,19 @@ class DB:
         except InvalidRequestError:
             raise ValueError("Invalid")
         return user
-    
+
     def update_user(self, user_id: int, **kwargs) -> None:
-    """Updates a user details"""
-    try:
-        user = self.find_user_by(id=user_id)
-    except NoResultFound:
-        raise ValueError("Not found")
-    
-    for key, value in kwargs.items():
-        if hasattr(user, key):
-            setattr(user, key, value)
-        else:
-            raise ValueError(f"Attribute '{key}' does not exist on the User model")
-    
-    self._session.commit()
+        """Updates a user details"""
+        try:
+            user = self.find_user_by(id=user_id)
+        except NoResultFound:
+            raise ValueError("Not found")
+
+        for key, value in kwargs.items():
+            if hasattr(user, key):
+                setattr(user, key, value)
+            else:
+                raise ValueError(
+                    f"Attribute '{key}' does not exist")
+
+        self._session.commit()
